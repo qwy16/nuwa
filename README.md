@@ -1,8 +1,17 @@
 <h1><picture>
   <source media="(prefers-color-scheme: dark)" srcset="./lib/assets/wordmark.dark.png?raw=true">
   <source media="(prefers-color-scheme: light)" srcset="./lib/assets/wordmark.light.png?raw=true">
-  <img alt="Mastodon" src="./lib/assets/wordmark.light.png?raw=true" height="34">
+  <img alt="NuwaSocial" src="./lib/assets/wordmark.light.png?raw=true" height="68">
 </picture></h1>
+
+NuwaSocial is metaverse on top of Mastodon! Currently [NuwaSocial.com](https://nuwasocial.com) is an mastdon instance fully compatible with Mastodon.
+NuwaSocial is working hard to bring innovation into Metaverse community.
+
+Cheers~
+
+Fllowing are from original Mastodon source 
+
+==========================================>
 
 [![GitHub release](https://img.shields.io/github/release/mastodon/mastodon.svg)][releases]
 [![Build Status](https://img.shields.io/circleci/project/github/mastodon/mastodon.svg)][circleci]
