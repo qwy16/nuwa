@@ -16,7 +16,6 @@ import {
   translateStatus,
   undoStatusTranslation,
 } from '../../actions/statuses';
-import MissingIndicator from '../../components/missing_indicator';
 import LoadingIndicator from 'mastodon/components/loading_indicator';
 import DetailedStatus from './components/detailed_status';
 import ActionBar from './components/action_bar';
@@ -50,7 +49,6 @@ import { initBoostModal } from '../../actions/boosts';
 import { initReport } from '../../actions/reports';
 import { makeGetStatus, makeGetPictureInPicture } from '../../selectors';
 import ScrollContainer from 'mastodon/containers/scroll_container';
-import ColumnBackButton from '../../components/column_back_button';
 import ColumnHeader from '../../components/column_header';
 import StatusContainer from '../../containers/status_container';
 import { openModal } from '../../actions/modal';
@@ -62,6 +60,7 @@ import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import Icon from 'mastodon/components/icon';
 import { Helmet } from 'react-helmet';
+import BundleColumnError from 'mastodon/features/ui/components/bundle_column_error';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -176,8 +175,6 @@ const titleFromStatus = status => {
   return `${prefix}: "${truncate(text, 30)}"`;
 };
 
-export default @injectIntl
-@connect(makeMapStateToProps)
 class Status extends ImmutablePureComponent {
 
   static contextTypes = {
@@ -586,19 +583,16 @@ class Status extends ImmutablePureComponent {
 
     if (status === null) {
       return (
-        <Column>
-          <ColumnBackButton multiColumn={multiColumn} />
-          <MissingIndicator />
-        </Column>
+        <BundleColumnError multiColumn={multiColumn} errorType='routing' />
       );
     }
 
     if (ancestorsIds && ancestorsIds.size > 0) {
-      ancestors = <div>{this.renderChildren(ancestorsIds)}</div>;
+      ancestors = <>{this.renderChildren(ancestorsIds)}</>;
     }
 
     if (descendantsIds && descendantsIds.size > 0) {
-      descendants = <div>{this.renderChildren(descendantsIds)}</div>;
+      descendants = <>{this.renderChildren(descendantsIds)}</>;
     }
 
     const isLocal = status.getIn(['account', 'acct'], '').indexOf('@') === -1;
@@ -632,7 +626,7 @@ class Status extends ImmutablePureComponent {
             {ancestors}
 
             <HotKeys handlers={handlers}>
-              <div className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+              <div className={classNames('focusable', 'detailed-status__wrapper', `detailed-status__wrapper-${status.get('visibility')}`)} tabIndex={0} aria-label={textForScreenReader(intl, status, false)}>
                 <DetailedStatus
                   key={`details-${status.get('id')}`}
                   status={status}
@@ -684,3 +678,5 @@ class Status extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(connect(makeMapStateToProps)(Status));
